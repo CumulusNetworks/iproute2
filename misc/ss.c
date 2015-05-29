@@ -2208,6 +2208,8 @@ static int inet_show_netlink(struct filter *f, FILE *dump_fp, int protocol)
 		return -1;
 	rth.dump = MAGIC_SEQ;
 	rth.dump_fp = dump_fp;
+	if (preferred_family == PF_INET6)
+		family = PF_INET6;
 
 again:
 	if ((err = sockdiag_send(family, rth.fd, protocol, f)))
@@ -2220,7 +2222,7 @@ again:
 		}
 		goto Exit;
 	}
-	if (family == PF_INET) {
+	if (family == PF_INET && preferred_family != PF_INET) {
 		family = PF_INET6;
 		goto again;
 	}
