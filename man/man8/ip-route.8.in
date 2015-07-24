@@ -80,6 +80,8 @@ replace " } "
 
 .ti -8
 .IR NH " := [ "
+.B  encap
+.IR "ENCAPTYPE ENCAPHDR" " ] [ "
 .B  via
 [
 .IR FAMILY " ] " ADDRESS " ] [ "
@@ -163,6 +165,14 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
 .ti -8
 .IR PREF " := [ "
 .BR low " | " medium " | " high " ]"
+
+.ti -8
+.IR ENCAPTYPE " := [ "
+.BR mpls " ]"
+
+.ti -8
+.IR ENCAPHDR " := [ "
+.BR MPLSLABEL " ]"
 
 
 .SH DESCRIPTION
@@ -589,6 +599,29 @@ Discovery messages. Namely:
 - the route has a highest priority
 .sp
 
+.TP
+.BI encap " ENCAPTYPE ENCAPHDR"
+attach tunnel encap attributes to this route.
+.sp
+.I ENCAPTYPE
+is a string specifying the supported encapsulation type. Namely:
+
+.in +8
+.BI mpls
+- encapsulation type mpls
+.sp
+
+.in -8
+.I ENCAPHDR
+is a set of encapsulation attributes specific to the
+.I ENCAPTYPE.
+
+.in +8
+.I MPLSLABEL
+- mpls label stack with labels separated by
+.I "/"
+.sp
+
 .in -8
 .RE
 
@@ -847,7 +880,11 @@ ip route add default via 192.168.1.1 dev eth0
 Adds a default route (for all addresses) via the local gateway 192.168.1.1 that can
 be reached on device eth0.
 .RE
-
+.PP
+ip route add 10.1.1.0/30 encap mpls 200/300 via 10.1.1.1 dev eth0
+.RS 4
+Adds an ipv4 route with mpls encapsulation attributes attached to it.
+.RE
 .SH SEE ALSO
 .br
 .BR ip (8)
