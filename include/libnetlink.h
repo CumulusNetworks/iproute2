@@ -95,6 +95,10 @@ extern int parse_rtattr_byindex(struct rtattr *tb[], int max, struct rtattr *rta
 extern struct rtattr *parse_rtattr_one(int type, struct rtattr *rta, int len);
 extern int __parse_rtattr_nested_compat(struct rtattr *tb[], int max, struct rtattr *rta, int len);
 
+extern struct rtattr *rta_nest(struct rtattr *rta, int maxlen, int type);
+extern int rta_nest_end(struct rtattr *rta, struct rtattr *nest);
+extern int rta_addattr16(struct rtattr *rta, int maxlen, int type, __u16 data);
+
 #define parse_rtattr_nested(tb, max, rta) \
 	(parse_rtattr((tb), (max), RTA_DATA(rta), RTA_PAYLOAD(rta)))
 
